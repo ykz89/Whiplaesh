@@ -1,0 +1,149 @@
+units:
+  # Proxy Spacing Variables
+  kx: u
+  ky: u
+  # Padding Variables
+  px: kx + 4
+  py: ky + 4
+
+points:
+  zones:
+    matrix:
+      # Fix placement on KiCad sheet.
+      anchor:
+        shift: [100, -100]
+      columns:
+        pinky:
+          key.splay: 15
+          rows.top.skip: true
+        ring:
+          key:
+            splay: -10
+            stagger: 0.4U
+            spread: 1.1U
+        middle:
+          key:
+            stagger: 0.5U
+        index:
+          key:
+            stagger: -0.25U
+        inner:
+          key:
+            stagger: -0.25U
+      rows:
+        bottom:
+        home:
+        top:
+    thumbs:
+      anchor:
+        ref: matrix_inner_top
+        shift: [0, -1.5U]
+      columns:
+        left:
+          key:
+            splay: -15
+        right:
+      rows:
+        cluster:
+          shift: [0, -2U]
+  rotate: -20
+  mirror: &mirror
+      ref: matrix_inner_top
+      distance: 3U
+outlines:
+  keys:
+    - what: rectangle
+      where: true
+      size: [kx-0.5, ky-0.5]
+  board_left:
+    - what: polygon
+      operation: stack
+      fillet: 4
+      points:
+        # Top
+        - ref: matrix_inner_top
+          shift: [0.5px,0.5py]
+        - ref: matrix_middle_top
+          shift: [0.5px,0.5py]
+        - ref: matrix_middle_top
+          shift: [-0.5px,0.5py]
+        - ref: matrix_ring_top
+          shift: [-0.5px,0.5py]
+        - ref: matrix_pinky_home
+          shift: [-0.5px,0.5py]
+        - ref: matrix_pinky_bottom
+          shift: [-0.5px,-0.5py]
+        - ref: thumbs_left_cluster
+          shift: [-0.5px,-0.5py]
+        - ref: thumbs_right_cluster
+          shift: [0.5px,-0.5py]
+        - ref: thumbs_right_cluster
+          shift: [0.5px,0.5py]
+        - ref: matrix_inner_bottom
+          shift: [0.5px,-0.5py]
+  board_right:
+    - what: polygon
+      operation: stack
+      fillet: 4
+      points:
+        # Top
+        - ref: mirror_matrix_inner_top
+          shift: [0.5px,0.5py]
+        - ref: mirror_matrix_middle_top
+          shift: [0.5px,0.5py]
+        - ref: mirror_matrix_middle_top
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_ring_top
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_pinky_home
+          shift: [-0.5px,0.5py]
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-0.5px,-0.5py]
+        - ref: mirror_thumbs_left_cluster
+          shift: [-0.5px,-0.5py]
+        - ref: mirror_thumbs_right_cluster
+          shift: [0.5px,-0.5py]
+        - ref: mirror_thumbs_right_cluster
+          shift: [0.5px,0.5py]
+        - ref: mirror_matrix_inner_bottom
+          shift: [0.5px,-0.5py]
+  combo_left:
+    - name: board_left
+    - operation: subtract
+      name: keys
+  combo_right:
+    - name: board_right
+    - operation: subtract
+      name: keys
+pcbs:
+  keyboard:
+    outlines:
+      main:
+        outline: board_left
+    footprints:
+      glp_hotswap:
+        what: ceoloide/switch_gateron_ks27_ks33
+        where: true
+        params:
+          include_keycap: true
+          reversible: false
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: ceoloide/diode_tht_sod123
+        where: true
+        params:
+          include_tht: true
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -10]
+      mcu:
+        what: ceoloide/mcu_nice_nano
+        params:
+          orientation: "down"
+        where:
+          ref: matrix_inner_top
+          shift: [0,0]
+          rotate: 0
