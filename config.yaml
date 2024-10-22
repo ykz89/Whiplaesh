@@ -19,17 +19,17 @@ points:
         ring:
           key:
             splay: -10
-            stagger: 0.4U
-            spread: 1.1U
+            stagger: 0.4u
+            spread: 1.1u
         middle:
           key:
-            stagger: 0.5U
+            stagger: 0.5u
         index:
           key:
-            stagger: -0.25U
+            stagger: -0.25u
         inner:
           key:
-            stagger: -0.25U
+            stagger: -0.25u
       rows:
         bottom:
         home:
@@ -37,7 +37,7 @@ points:
     thumbs:
       anchor:
         ref: matrix_inner_top
-        shift: [0, -1.5U]
+        shift: [0, -1.5u]
       columns:
         left:
           key:
@@ -45,11 +45,11 @@ points:
         right:
       rows:
         cluster:
-          shift: [0, -2U]
+          shift: [0, -2u]
   rotate: -20
   mirror: &mirror
       ref: matrix_inner_top
-      distance: 3U
+      distance: 5u
 outlines:
   keys:
     - what: rectangle
@@ -58,9 +58,11 @@ outlines:
   board_left:
     - what: polygon
       operation: stack
-      fillet: 4
+      fillet: 3
       points:
         # Top
+        - ref: matrix_inner_top
+          shift: [1.45px,0.5py]
         - ref: matrix_inner_top
           shift: [0.5px,0.5py]
         - ref: matrix_middle_top
@@ -78,15 +80,15 @@ outlines:
         - ref: thumbs_right_cluster
           shift: [0.5px,-0.5py]
         - ref: thumbs_right_cluster
-          shift: [0.5px,0.5py]
-        - ref: matrix_inner_bottom
-          shift: [0.5px,-0.5py]
+          shift: [1px,0.5py]
   board_right:
     - what: polygon
       operation: stack
-      fillet: 4
+      fillet: 3
       points:
         # Top
+        - ref: mirror_matrix_inner_top
+          shift: [1.45px,0.5py]
         - ref: mirror_matrix_inner_top
           shift: [0.5px,0.5py]
         - ref: mirror_matrix_middle_top
@@ -104,9 +106,7 @@ outlines:
         - ref: mirror_thumbs_right_cluster
           shift: [0.5px,-0.5py]
         - ref: mirror_thumbs_right_cluster
-          shift: [0.5px,0.5py]
-        - ref: mirror_matrix_inner_bottom
-          shift: [0.5px,-0.5py]
+          shift: [1px,0.5py]
   combo_left:
     - name: board_left
     - operation: subtract
@@ -116,14 +116,14 @@ outlines:
     - operation: subtract
       name: keys
 pcbs:
-  keyboard:
+  left:
     outlines:
       main:
         outline: board_left
     footprints:
       glp_hotswap:
         what: ceoloide/switch_gateron_ks27_ks33
-        where: true
+        where: /^(matrix_|thumbs_).*/
         params:
           include_keycap: true
           reversible: false
@@ -132,18 +132,78 @@ pcbs:
           to: "{{colrow}}"
       diode:
         what: ceoloide/diode_tht_sod123
-        where: true
+        where: /^matrix_.*/
         params:
           include_tht: true
           from: "{{colrow}}"
           to: "{{row_net}}"
         adjust:
           shift: [0, -10]
-      mcu:
+      nice_nano:
         what: ceoloide/mcu_nice_nano
         params:
-          orientation: "down"
+          side: "F"
+          reverse_mount: true
         where:
           ref: matrix_inner_top
-          shift: [0,0]
+          shift: [1.1u,-0.265u]
           rotate: 0
+      nice_view:
+        what: ceoloide/display_nice_view
+        where:
+          ref: matrix_inner_top
+          shift: [1.1u,-0.4u]
+        params:
+          MOSI: MOSI,
+          SCK: SCK,
+          VCC: VCC,
+          GND: GND,
+          CS: CS,
+      jst_ph:
+        what: ceoloide/battery_connector_jst_ph_2
+        where:
+          ref: matrix_inner_top
+          shift: [1.1u,-2.5u]
+          rotate: 180
+        params:
+          side: "B"
+          BAT_P: BAT_P
+          BAT_N: GND
+      reset_button:
+        what: ceoloide/reset_switch_tht_top 
+        where:
+          ref: matrix_inner_top
+          shift: [1.65u,-1.75u]   
+          rotate: 90
+        params:
+          from: GND
+          to: RST
+      power_switch:
+        what: ceoloide/power_switch_smd_side
+        where:
+          ref: matrix_inner_top
+          shift: [1.68u,-2.5u]
+        params:
+          side: "B"
+          from: BAT_P
+          to: RAW
+      front_text: &text
+        what: ceoloide/utility_text
+        where: &textWhere
+            ref: matrix_middle_bottom
+            shift: [0, -2u]
+            rotate: -10
+        params: &textParams
+            text: Whiplash
+            thickness: 0.4
+            width: 2
+            height: 2
+      ergogen_logo:
+        what: ceoloide/utility_ergogen_logo
+        where: &textWhere
+            ref: matrix_middle_bottom
+            shift: [-0.6u, -1.9u]
+            rotate: -10
+        
+
+      
