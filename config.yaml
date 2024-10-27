@@ -1,5 +1,8 @@
 meta:
   engine: 4.1.0 # Min Ergogen version for KiCad 8 footprints
+  name: Whiplaesh
+  version: 0.1
+  author: ykz89
 
 units:
   # Proxy Spacing Variables
@@ -9,8 +12,15 @@ units:
   px: kx + 4
   py: ky + 4
   # MX switch hole
-  sx: kx - 2
-  sy: ky - 2
+  sx: kx - 5
+  sy: ky - 5
+
+  # Physical measures
+  pwr_trace_width: 0.25
+  gnd_trace_width: 0.25
+  signal_trace_width: 0.15
+  via_size: 0.56 # JLCPCB min 0.56 | KiCad default 0.8
+  via_drill: 0.3 # JLCPCB min 0.3 | KiCad default 0.4
 
 points:
   zones:
@@ -20,37 +30,53 @@ points:
         shift: [100, -100]
       columns:
         pinky:
-          key.splay: 15
+          key:
+            splay: 15
+            column_net: P21
           rows.top.skip: true
         ring:
           key:
             splay: -10
             stagger: 0.4u
             spread: 1.1u
+            column_net: P20
         middle:
           key:
             stagger: 0.5u
+            column_net: P19
         index:
           key:
             stagger: -0.25u
+            column_net: P18
         inner:
           key:
             stagger: -0.25u
+            column_net: P15
       rows:
         bottom:
+          row_net: P6
+          mirror.row_net: P6
         home:
+          row_net: P5
+          mirror.row_net: P5
         top:
+          row_net: P4
+          mirror.row_net: P5
     thumbs:
       anchor:
         ref: matrix_inner_top
-        shift: [0, -1.5u]
+        shift: [0.25u, -1.5u]
       columns:
         left:
           key:
             splay: -15
+            column_net: P18
         right:
+          key.column_net: P15
       rows:
         cluster:
+          row_net: P5
+          mirror.row_net: P5
           shift: [0, -2u]
   rotate: -20
   mirror: &mirror
@@ -84,9 +110,9 @@ outlines:
         - ref: thumbs_left_cluster
           shift: [-0.5px,-0.5py]
         - ref: thumbs_right_cluster
-          shift: [0.5px,-0.5py]
+          shift: [0.77px,-0.5py]
         - ref: thumbs_right_cluster
-          shift: [1px,0.5py]
+          shift: [0.77px,0.5py]
   board_right:
     - what: polygon
       operation: stack
@@ -110,9 +136,9 @@ outlines:
         - ref: mirror_thumbs_left_cluster
           shift: [-0.5px,-0.5py]
         - ref: mirror_thumbs_right_cluster
-          shift: [0.5px,-0.5py]
+          shift: [0.77px,-0.5py]
         - ref: mirror_thumbs_right_cluster
-          shift: [1px,0.5py]
+          shift: [0.77px,0.5py]
   combo_left:
     - name: board_left
     - operation: subtract
@@ -123,7 +149,7 @@ outlines:
       name: keys
 pcbs:
   left:
-    template: kicad8 # Required, since footprints are KiCad 8 only
+    template: kicad8
     outlines:
       main:
         outline: board_left
@@ -132,6 +158,7 @@ pcbs:
         what: ks27-choc-v1-mx-soldered-and-hotswap
         where: /^(matrix_|thumbs_).*/
         params:
+          side: B
           include_switch_hole: true
           from: "{{column_net}}"
           to: "{{colrow}}"
@@ -159,11 +186,11 @@ pcbs:
           ref: matrix_inner_top
           shift: [1.1u,-0.4u]
         params:
-          MOSI: MOSI,
-          SCK: SCK,
-          VCC: VCC,
-          GND: GND,
-          CS: CS,
+          MOSI: P2
+          SCK: P3
+          VCC: VCC
+          GND: GND
+          CS: P1
       jst_ph:
         what: ceoloide/battery_connector_jst_ph_2
         where:
