@@ -1,3 +1,6 @@
+meta:
+  engine: 4.1.0 # Min Ergogen version for KiCad 8 footprints
+
 units:
   # Proxy Spacing Variables
   kx: u
@@ -5,6 +8,9 @@ units:
   # Padding Variables
   px: kx + 4
   py: ky + 4
+  # MX switch hole
+  sx: kx - 2
+  sy: ky - 2
 
 points:
   zones:
@@ -54,7 +60,7 @@ outlines:
   keys:
     - what: rectangle
       where: true
-      size: [kx-0.5, ky-0.5]
+      size: [sx, sy]
   board_left:
     - what: polygon
       operation: stack
@@ -117,17 +123,16 @@ outlines:
       name: keys
 pcbs:
   left:
+    template: kicad8 # Required, since footprints are KiCad 8 only
     outlines:
       main:
         outline: board_left
     footprints:
       glp_hotswap:
-        what: ceoloide/switch_gateron_ks27_ks33
+        what: ks27-choc-v1-mx-soldered-and-hotswap
         where: /^(matrix_|thumbs_).*/
         params:
-          include_keycap: true
-          reversible: false
-          hotswap: true
+          include_switch_hole: true
           from: "{{column_net}}"
           to: "{{colrow}}"
       diode:
@@ -191,19 +196,14 @@ pcbs:
         what: ceoloide/utility_text
         where: &textWhere
             ref: matrix_middle_bottom
-            shift: [0, -2u]
+            shift: [-0.25u, -1.9u]
             rotate: -10
         params: &textParams
-            text: Whiplash
+            text: Whiplaesh
             thickness: 0.4
-            width: 2
-            height: 2
-      ergogen_logo:
-        what: ceoloide/utility_ergogen_logo
-        where: &textWhere
-            ref: matrix_middle_bottom
-            shift: [-0.6u, -1.9u]
-            rotate: -10
+            width: 6
+            height: 6
+
         
 
       
