@@ -160,6 +160,7 @@ pcbs:
         params:
           side: B
           include_switch_hole: true
+          include_traces: true
           from: "{{column_net}}"
           to: "{{colrow}}"
       diode:
@@ -223,13 +224,13 @@ pcbs:
         what: ceoloide/utility_text
         where: &textWhere
             ref: matrix_middle_bottom
-            shift: [-0.25u, -1.9u]
+            shift: [-0.25u, -2u]
             rotate: -10
         params: &textParams
             text: Whiplaesh
-            thickness: 0.4
-            width: 6
-            height: 6
+            thickness: 0.2
+            width: 3
+            height: 3
 
         
 
