@@ -32,36 +32,36 @@ points:
         pinky:
           key:
             splay: 15
-            column_net: P21
+            column_net: P19
           rows.top.skip: true
         ring:
           key:
             splay: -10
             stagger: 0.4u
             spread: 1.1u
-            column_net: P20
+            column_net: P18
         middle:
           key:
             stagger: 0.5u
-            column_net: P19
+            column_net: P15
         index:
           key:
             stagger: -0.25u
-            column_net: P18
+            column_net: P14
         inner:
           key:
             stagger: -0.25u
-            column_net: P15
+            column_net: P16
       rows:
         bottom:
           row_net: P6
-          mirror.row_net: P6
+          mirror.row_net: P5
         home:
           row_net: P5
-          mirror.row_net: P5
+          mirror.row_net: P6
         top:
           row_net: P4
-          mirror.row_net: P5
+          mirror.row_net: P7
     thumbs:
       anchor:
         ref: matrix_inner_top
@@ -70,13 +70,13 @@ points:
         left:
           key:
             splay: -15
-            column_net: P18
+            column_net: P14
         right:
-          key.column_net: P15
+          key.column_net: P16
       rows:
         cluster:
-          row_net: P5
-          mirror.row_net: P5
+          row_net: P8
+          mirror.row_net: P8
           shift: [0, -2u]
   rotate: -20
   mirror: &mirror
@@ -155,9 +155,10 @@ pcbs:
         outline: board_left
     footprints:
       glp_hotswap:
-        what: ks27-choc-v1-mx-soldered-and-hotswap
+        what: fingerpunch/ks27-choc-v1-mx-soldered-and-hotswap
         where: /^(matrix_|thumbs_).*/
         params:
+          designator: SW
           side: B
           include_switch_hole: true
           include_traces: true
@@ -165,7 +166,7 @@ pcbs:
           to: "{{colrow}}"
       diode:
         what: ceoloide/diode_tht_sod123
-        where: /^matrix_.*/
+        where: /^(matrix_|thumbs_).*/
         params:
           include_tht: true
           from: "{{colrow}}"
@@ -177,27 +178,23 @@ pcbs:
         params:
           side: "F"
           reverse_mount: true
+          show_silk_labels_on_both_sides: false
         where:
           ref: matrix_inner_top
           shift: [1.1u,-0.265u]
           rotate: 0
-      nice_view:
-        what: ceoloide/display_nice_view
+      vik:
+        what: fingerpunch/vik-keyboard-connector-horizontal
         where:
-          ref: matrix_inner_top
-          shift: [1.1u,-0.4u]
-        params:
-          MOSI: P2
-          SCK: P3
-          VCC: VCC
-          GND: GND
-          CS: P1
+          ref: matrix_inner_bottom
+          shift: [1.5u,-0.5u]
+          rotate: 90
       jst_ph:
         what: ceoloide/battery_connector_jst_ph_2
         where:
-          ref: matrix_inner_top
-          shift: [1.1u,-2.5u]
-          rotate: 180
+          ref: matrix_inner_bottom
+          shift: [1.25u,0.25u]
+          rotate: -90
         params:
           side: "B"
           BAT_P: BAT_P
@@ -214,18 +211,39 @@ pcbs:
       power_switch:
         what: ceoloide/power_switch_smd_side
         where:
-          ref: matrix_inner_top
-          shift: [1.68u,-2.5u]
+          ref: thumbs_right_cluster
+          shift: [0.86u,0]   
+          rotate: 0
         params:
-          side: "B"
+          side: "F"
           from: BAT_P
           to: RAW
+      mounting_hole_top_left:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: matrix_ring_top
+          shift: [-0.7u,0]
+      mounting_hole_top_right:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: matrix_inner_top
+          shift: [-0.25u,0.6u]
+      mounting_hole_bottom_right:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: matrix_index_bottom
+          shift: [-0.25,-1.75u]
+      mounting_hole_bottom_left:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: matrix_ring_bottom
+          shift: [-0.25u,-1.25u]
       front_text: &text
         what: ceoloide/utility_text
         where: &textWhere
-            ref: matrix_middle_bottom
-            shift: [-0.25u, -2u]
-            rotate: -10
+            ref: matrix_inner_top
+            shift: [1.1u, -0.25u]
+            rotate: 90
         params: &textParams
             text: Whiplaesh
             thickness: 0.2
