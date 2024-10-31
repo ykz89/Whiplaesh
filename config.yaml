@@ -78,7 +78,7 @@ points:
           row_net: P8
           mirror.row_net: P8
           shift: [0, -2u]
-  rotate: -20
+  rotate: -5
   mirror: &mirror
       ref: matrix_inner_top
       distance: 5u
@@ -148,10 +148,10 @@ outlines:
     - operation: subtract
       name: keys
 pcbs:
-  left:
+  Whiplaesh_left:
     template: kicad8
     outlines:
-      main:
+      left:
         outline: board_left
     footprints:
       glp_hotswap:
@@ -176,6 +176,7 @@ pcbs:
       nice_nano:
         what: ceoloide/mcu_nice_nano
         params:
+          designator: MCU
           side: "F"
           reverse_mount: true
           show_silk_labels_on_both_sides: false
@@ -189,6 +190,31 @@ pcbs:
           ref: matrix_inner_bottom
           shift: [1.5u,-0.5u]
           rotate: 90
+        params:
+          P1: VCC
+          P2: GND
+          P3: P2
+          P4: P3
+          P5: P0
+          P6: RAW
+          P7: P21
+          P8: P10
+          P9: P20
+          P10: P1
+          P11: P4
+          P12: P9
+      nice_view:
+        what: ceoloide/display_nice_view
+        where:
+          ref: matrix_inner_top
+          shift: [1.1u,-0.4u]
+        params:
+          designator: DISP
+          MOSI: P10
+          SCK: P9
+          VCC: VCC
+          GND: GND
+          CS: P101
       jst_ph:
         what: ceoloide/battery_connector_jst_ph_2
         where:
@@ -242,6 +268,133 @@ pcbs:
         what: ceoloide/utility_text
         where: &textWhere
             ref: matrix_inner_top
+            shift: [1.1u, -0.25u]
+            rotate: 90
+        params: &textParams
+            text: Whiplaesh
+            thickness: 0.2
+            width: 3
+            height: 3
+  Whiplaesh_right:
+    template: kicad8
+    outlines:
+      right:
+        outline: board_right
+    footprints:
+      glp_hotswap:
+        what: fingerpunch/ks27-choc-v1-mx-soldered-and-hotswap
+        where: /^(mirror_matrix_|mirror_thumbs_).*/
+        params:
+          designator: SW
+          side: B
+          include_switch_hole: true
+          include_traces: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: ceoloide/diode_tht_sod123
+        where: /^(mirror_matrix_|mirror_thumbs_).*/
+        params:
+          include_tht: true
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -10]
+      nice_nano:
+        what: ceoloide/mcu_nice_nano
+        params:
+          designator: MCU
+          side: "F"
+          reverse_mount: true
+          show_silk_labels_on_both_sides: false
+        where:
+          ref: mirror_matrix_inner_top
+          shift: [1.1u,-0.265u]
+          rotate: 0
+      vik:
+        what: fingerpunch/vik-keyboard-connector-horizontal
+        where:
+          ref: mirror_matrix_inner_bottom
+          shift: [1.5u,-0.5u]
+          rotate: 90
+        params:
+          P1: VCC
+          P2: GND
+          P3: P2
+          P4: P3
+          P5: P0
+          P6: RAW
+          P7: P21
+          P8: P10
+          P9: P20
+          P10: P1
+          P11: P4
+          P12: P9
+      nice_view:
+        what: ceoloide/display_nice_view
+        where:
+          ref: mirror_matrix_inner_top
+          shift: [1.1u,-0.4u]
+        params:
+          designator: DISP
+          MOSI: P10
+          SCK: P9
+          VCC: VCC
+          GND: GND
+          CS: P101
+      jst_ph:
+        what: ceoloide/battery_connector_jst_ph_2
+        where:
+          ref: mirror_matrix_inner_bottom
+          shift: [1.25u,0.25u]
+          rotate: -90
+        params:
+          side: "B"
+          BAT_P: BAT_P
+          BAT_N: GND
+      reset_button:
+        what: ceoloide/reset_switch_tht_top 
+        where:
+          ref: mirror_matrix_inner_top
+          shift: [1.65u,-1.75u]   
+          rotate: 90
+        params:
+          from: GND
+          to: RST
+      power_switch:
+        what: ceoloide/power_switch_smd_side
+        where:
+          ref: mirror_thumbs_right_cluster
+          shift: [0.86u,0]   
+          rotate: 0
+        params:
+          side: "F"
+          from: BAT_P
+          to: RAW
+      mounting_hole_top_left:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: mirror_matrix_ring_top
+          shift: [-0.7u,0]
+      mounting_hole_top_right:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: mirror_matrix_inner_top
+          shift: [-0.25u,0.6u]
+      mounting_hole_bottom_right:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: mirror_matrix_index_bottom
+          shift: [-0.25,-1.75u]
+      mounting_hole_bottom_left:
+        what: ceoloide/mounting_hole_plated
+        where: 
+          ref: mirror_matrix_ring_bottom
+          shift: [-0.25u,-1.25u]
+      front_text: &text
+        what: ceoloide/utility_text
+        where: &textWhere
+            ref: mirror_matrix_inner_top
             shift: [1.1u, -0.25u]
             rotate: 90
         params: &textParams

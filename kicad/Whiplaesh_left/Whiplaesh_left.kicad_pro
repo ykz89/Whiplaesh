@@ -431,7 +431,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Whiplaesh.kicad_pro",
+    "filename": "Whiplaesh_left.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -576,16 +576,8 @@
   },
   "sheets": [
     [
-      "3858f8d2-bd09-45e6-8170-3df8a975bd9a",
+      "c18047bc-8d47-4b16-af72-2e3e1125ba5a",
       "Root"
-    ],
-    [
-      "2519477d-f10e-409f-9de8-6d519304068e",
-      "Left"
-    ],
-    [
-      "3f4c5f67-9e2d-410f-afbd-817781fb9464",
-      "Right"
     ]
   ],
   "text_variables": {}
