@@ -198,20 +198,6 @@ pcbs:
           rotate: 90
         params:
           designator: VIK_OUT2
-      nice_view_l:
-        what: ceoloide/display_nice_view
-        where:
-          ref: matrix_inner_top
-          shift: [1.1u,-0.4u]
-        params:
-          designator: DISP1
-      nice_view_r:
-        what: ceoloide/display_nice_view
-        where:
-          ref: mirror_matrix_inner_top
-          shift: [1.1u,-0.4u]
-        params:
-          designator: DISP2
       jst_l:
         what: ceoloide/battery_connector_jst_ph_2
         where:
