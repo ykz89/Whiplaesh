@@ -1,7 +1,5 @@
 [submodule "footprints/ceoloide"]
 	path = footprints/ceoloide
 	url = https://github.com/ceoloide/ergogen-footprints.git
-[submodule "footprints/fingerpunch"]
-	path = footprints/fingerpunch
-	url = https://github.com/ykz89/ergogen-footprints.git
+
 
